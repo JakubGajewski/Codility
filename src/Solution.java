@@ -3,14 +3,11 @@ import java.util.Arrays;
 
 class Solution {
     public int solution(int A, int B, int K) {
-        if (A%K == 0) {
-            return (B/K - A/K + 1);
-        }
-        return (B/K - A/K);
+        return 5;
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.solution(1, 6, 3));
+        System.out.println(solution.solution(21));
     }
 }
