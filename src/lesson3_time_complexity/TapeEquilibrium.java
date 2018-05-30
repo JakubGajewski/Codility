@@ -17,6 +17,6 @@ public class TapeEquilibrium {
             }
         }
         return minDifference;
-        
+
     }
 }
