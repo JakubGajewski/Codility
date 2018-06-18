@@ -1,6 +1,8 @@
+package lesson7_stacksAndQueues;
+
 import java.util.ArrayDeque;
 
-class Solution {
+class StoneWall {
     public int solution(int[] H) {
         ArrayDeque<Integer> fulfilledTo = new ArrayDeque<>();
         fulfilledTo.add(Integer.valueOf(H[0]));
@@ -12,7 +14,7 @@ class Solution {
 
             Integer currentHeight = Integer.valueOf(H[i]);
 
-            if (currentHeight.equals(previousHeight)){
+            if (currentHeight.intValue() == previousHeight.intValue()){
                 continue;
             }
 
@@ -27,7 +29,7 @@ class Solution {
                 fulfilledTo.removeFirst();
             }
 
-            if (!fulfilledTo.isEmpty() && fulfilledTo.getFirst().equals(currentHeight)) {
+            if (!fulfilledTo.isEmpty() && fulfilledTo.getFirst().intValue() == currentHeight.intValue()) {
                 previousHeight = currentHeight;
                 continue;
             }
