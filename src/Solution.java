@@ -1,43 +1,35 @@
 import java.util.ArrayDeque;
+import java.util.Deque;
 
 class Solution {
-    public int solution(int[] H) {
-        ArrayDeque<Integer> fulfilledTo = new ArrayDeque<>();
-        fulfilledTo.add(Integer.valueOf(H[0]));
-        Integer previousHeight = Integer.valueOf(H[0]);
 
-        int result = 1;
+public int solution(int[] A, int[] B) {
 
-        for (int i = 0; i<H.length; i++) {
+    Deque <Integer> sizesOfFishesFlowingDown = new ArrayDeque<>();
 
-            Integer currentHeight = Integer.valueOf(H[i]);
+    int result = 0;
 
-            if (currentHeight.equals(previousHeight)){
-                continue;
-            }
+    for (int i = 0; i < A.length; i++) {
 
-            if (currentHeight > previousHeight) {
-                fulfilledTo.addFirst(currentHeight);
-                result++;
-                previousHeight = currentHeight;
-                continue;
-            }
-
-            while (!fulfilledTo.isEmpty() && currentHeight < fulfilledTo.getFirst()) {
-                fulfilledTo.removeFirst();
-            }
-
-            if (!fulfilledTo.isEmpty() && fulfilledTo.getFirst().equals(currentHeight)) {
-                previousHeight = currentHeight;
-                continue;
-            }
-
-            fulfilledTo.addFirst(currentHeight);
-            previousHeight = currentHeight;
-            result++;
+        if (B[i] == 1) {
+            sizesOfFishesFlowingDown.addLast(B[i]);
+            continue;
         }
 
+        if (B[i] == 0 && sizesOfFishesFlowingDown.isEmpty()) {
+            result++;
+            continue;
+        }
 
-        return result;
+        if (sizesOfFishesFlowingDown.getLast() < A[i]) {
+            sizesOfFishesFlowingDown.removeLast();
+            i--;
+            continue;
+        }
+    }
+
+    result += sizesOfFishesFlowingDown.size();
+    return result;
+
     }
 }
