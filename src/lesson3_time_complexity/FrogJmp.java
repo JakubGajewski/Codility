@@ -1,4 +1,5 @@
 package lesson3_time_complexity;
+//Score: 100%
 
 public class FrogJmp {
     public int solution(int X, int Y, int D) {

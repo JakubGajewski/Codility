@@ -3,24 +3,36 @@ package lesson4_counting_elements;
 import java.util.Arrays;
 
 public class MaxCounters {
-    public int[] solution(int N, int[] A) {
-        int[] counters = new int[N];
-        int maxCounter = 0;
+        public int[] solution(int N, int[] A) {
 
-        for (int i = 0; i < A.length; i++) {
-            if (A[i] == N + 1) {
-                for (int j = 0; j < N; j++) {
-                    counters[j] = maxCounter;
+            int maxCounter = 0;
+            int allRisedTo = maxCounter;
+            int[] counters = new int[N];
+
+            for (int i : A) {
+
+                if (i > N) {
+                    allRisedTo = maxCounter;
+                } else {
+
+                    if (counters[i-1] < allRisedTo) {
+                        counters[i-1] = allRisedTo;
+                    }
+                    counters[i-1]++;
+
+                    if (maxCounter < counters[i-1]) {
+                        maxCounter = counters[i-1];
+                    }
                 }
-                continue;
             }
-            if (1 <= A[i] && A[i] <= N) {
-                counters[A[i] - 1] = counters[A[i] - 1] + 1;
-                if (counters[A[i] - 1] > maxCounter) {
-                    maxCounter = counters[A[i] - 1];
+
+
+            for (int i = 0; i < counters.length; i++) {
+                if (counters[i] < allRisedTo) {
+                    counters[i] = allRisedTo;
                 }
             }
+
+            return counters;
         }
-        return counters;
     }
-}

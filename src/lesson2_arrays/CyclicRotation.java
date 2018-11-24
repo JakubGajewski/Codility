@@ -1,4 +1,5 @@
 package lesson2_arrays;//https://app.codility.com/programmers/lessons/2-arrays/cyclic_rotation/
+//Score: 100%
 
 class CyclicRotation {
     public int[] solution(int[] A, int K) {

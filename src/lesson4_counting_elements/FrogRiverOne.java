@@ -1,6 +1,8 @@
 package lesson4_counting_elements;
 import java.util.Arrays;
 
+//TODO: start repetition from here!
+
 class FrogRiverOne {
     public int solution(int X, int[]A) {
 
