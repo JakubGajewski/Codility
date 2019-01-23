@@ -1,5 +1,8 @@
 package lesson8_leader;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.Optional;
 
 //A non-empty array A consisting of N integers is given.
 //
@@ -39,57 +42,121 @@ import java.util.Arrays;
 //        N is an integer within the range [1..100,000];
 //        each element of array A is an integer within the range [−1,000,000,000..1,000,000,000].
 //
-//        MY_SCORE:100%
+//        MY_SCORE:100%; wors-case complexity: O (n)
 
 class EquiLeader {
 
     public int solution(int[] A) {
 
+        Integer numberOfEquiLeaders = 0;
+        try {
+            Integer leaderValue = findValueOfLeader(A).get();
+            Integer  numberOfLeaderOccurencies  = getNumberOfOccurencies(leaderValue, A);
+
+            Integer counted = 0;
+
+            for (int i = 0; i < A.length; i++) {
+
+                if (A[i] == leaderValue) {
+                    counted++;
+                }
+
+                if ((counted > (i+1)/2) && (numberOfLeaderOccurencies - counted > (A.length -i+ -1)/2)){
+                    numberOfEquiLeaders++;
+                }
+            }
+            if (A[A.length -1] == leaderValue) {
+                counted++;
+            }
+        } finally {
+            return numberOfEquiLeaders;
+        }
+    }
+
+    public Optional<Integer> findValueOfLeader (int[] A) {
+
         if (A.length == 1) {
-            return 0;
+            return Optional.of(A[0]);
         }
 
-        int[] B = new int [A.length];
+        Deque<Integer> stackOfElements = new ArrayDeque<>();
 
         for (int i = 0; i < A.length; i++) {
-            B[i] = A[i];
-        }
 
-        Arrays.sort(B);
-
-        int candidate = B[B.length/2];
-
-        int numberOfCandidates = 0;
-
-        for (int i : A) {
-            if (i == candidate) {
-                numberOfCandidates++;
+            if (stackOfElements.isEmpty()) {
+                stackOfElements.add(A[i]);
+            } else {
+                if (stackOfElements.pollFirst() == A[i]) {
+                    stackOfElements.addFirst(A[i]);
+                    stackOfElements.addFirst(A[i]);
+                };
             }
         }
-
-        if (numberOfCandidates <= (A.length/2)) {
-            return 0;
+        if (stackOfElements.size() > 0) {
+            return Optional.of(stackOfElements.getFirst());
         }
-
-        int numberOfEquiLeaders = 0;
-        int leader = candidate;
-        int numberOfLeaders = numberOfCandidates;
-        int left = 0;
-        int right = numberOfLeaders;
-
-        for (int i = 0; i < A.length-1; i++) {
-
-            if (A[i] == leader) {
-                left++;
-                right--;
-            }
-
-            if (left > (i+1)/2 && right > (A.length-(i+1))/2) {
-                numberOfEquiLeaders++;
-            }
-        }
-
-        return numberOfEquiLeaders;
-
+        return Optional.empty();
     }
+
+    public Integer getNumberOfOccurencies (int checkedNumber, int [] arrray) {
+
+        int counter = 0;
+        for (int i : arrray) {
+            if (i == checkedNumber) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+
+
+// Alternative, slower(O(n log n)), but also 100% solution:
+//    public int solution(int[] A) {
+//
+//        if (A.length == 1) {
+//            return 0;
+//        }
+//
+//        int[] B = new int [A.length];
+//
+//        for (int i = 0; i < A.length; i++) {
+//            B[i] = A[i];
+//        }
+//
+//        Arrays.sort(B);
+//
+//        int candidate = B[B.length/2];
+//
+//        int numberOfCandidates = 0;
+//
+//        for (int i : A) {
+//            if (i == candidate) {
+//                numberOfCandidates++;
+//            }
+//        }
+//
+//        if (numberOfCandidates <= (A.length/2)) {
+//            return 0;
+//        }
+//
+//        int numberOfEquiLeaders = 0;
+//        int leader = candidate;
+//        int numberOfLeaders = numberOfCandidates;
+//        int left = 0;
+//        int right = numberOfLeaders;
+//
+//        for (int i = 0; i < A.length-1; i++) {
+//
+//            if (A[i] == leader) {
+//                left++;
+//                right--;
+//            }
+//
+//            if (left > (i+1)/2 && right > (A.length-(i+1))/2) {
+//                numberOfEquiLeaders++;
+//            }
+//        }
+//        return numberOfEquiLeaders;
+//    }
 }
