@@ -1,66 +1,73 @@
 import java.util.*;
+/*
 
+An array A consisting of N integers is given. It contains daily prices of a stock share for a period of N consecutive days. If a single share was bought on day P and sold on day Q, where 0 ≤ P ≤ Q < N, then the profit of such transaction is equal to A[Q] − A[P], provided that A[Q] ≥ A[P]. Otherwise, the transaction brings loss of A[P] − A[Q].
+
+For example, consider the following array A consisting of six elements such that:
+  A[0] = 23171
+  A[1] = 21011
+  A[2] = 21123
+  A[3] = 21366
+  A[4] = 21013
+  A[5] = 21367
+
+If a share was bought on day 0 and sold on day 2, a loss of 2048 would occur because A[2] − A[0] = 21123 − 23171 = −2048. If a share was bought on day 4 and sold on day 5, a profit of 354 would occur because A[5] − A[4] = 21367 − 21013 = 354. Maximum possible profit was 356. It would occur if a share was bought on day 1 and sold on day 5.
+
+Write a function,
+
+    class Solution { public int solution(int[] A); }
+
+that, given an array A consisting of N integers containing daily prices of a stock share for a period of N consecutive days, returns the maximum possible profit from one transaction during this period. The function should return 0 if it was impossible to gain any profit.
+
+For example, given array A consisting of six elements such that:
+  A[0] = 23171
+  A[1] = 21011
+  A[2] = 21123
+  A[3] = 21366
+  A[4] = 21013
+  A[5] = 21367
+
+the function should return 356, as explained above.
+
+Write an efficient algorithm for the following assumptions:
+
+        N is an integer within the range [0..400,000];
+        each element of array A is an integer within the range [0..200,000].
+
+*/
+
+//RESULT:  100%
 class Solution {
     public int solution(int[] A) {
 
-        Integer numberOfEquiLeaders = 0;
-        try {
-            Integer leaderValue = findValueOfLeader(A).get();
-            Integer  numberOfLeaderOccurencies  = getNumberOfOccurencies(leaderValue, A);
-
-            Integer counted = 0;
-
-            for (int i = 0; i < A.length; i++) {
-
-                if (A[i] == leaderValue) {
-                    counted++;
-                }
-
-                if ((counted > (i+1)/2) && (numberOfLeaderOccurencies - counted > (A.length -i+ -1)/2)){
-                    numberOfEquiLeaders++;
-                }
-            }
-            if (A[A.length -1] == leaderValue) {
-                counted++;
-            }
-        } finally {
-            return numberOfEquiLeaders;
-        }
-    }
-
-    public Optional<Integer> findValueOfLeader (int[] A) {
-
-        if (A.length == 1) {
-            return Optional.of(A[0]);
+        if (A.length < 2) {
+            return 0;
         }
 
-        Deque <Integer> stackOfElements = new ArrayDeque<>();
+        int currentMin = A[0];
+        int currentMax = A[0];
+        int currentProfit = 0;
+        int maxProfit = 0;
 
-        for (int i = 0; i < A.length; i++) {
+        for (int i : A) {
 
-            if (stackOfElements.isEmpty()) {
-                stackOfElements.add(A[i]);
-            } else {
-                 if (stackOfElements.pollFirst() == A[i]) {
-                     stackOfElements.addFirst(A[i]);
-                     stackOfElements.addFirst(A[i]);
-                 };
+            if (i < currentMin) {
+                currentMin = i;
+                currentMax = i;
+            }
+
+            if (i > currentMax) {
+                currentMax = i;
+            }
+
+            currentProfit = currentMax - currentMin;
+
+            if (currentProfit > maxProfit) {
+                maxProfit = currentProfit;
             }
         }
-        if (stackOfElements.size() > 0) {
-            return Optional.of(stackOfElements.getFirst());
-        }
-        return Optional.empty();
-    }
 
-    public Integer getNumberOfOccurencies (int checkedNumber, int [] arrray) {
-
-        int counter = 0;
-        for (int i : arrray) {
-            if (i == checkedNumber) {
-                counter++;
-            }
-        }
-        return counter;
+        return maxProfit;
     }
 }
+
