@@ -1,0 +1,19 @@
+class Solution {
+    public int solution(int[] A) {
+
+        Integer[] integerList = new Integer[A.length];
+        for (int i = 0; i < A.length; i++) {
+            integerList[i] = A[i];
+        }
+
+        List<Integer> l = Arrays.asList(integerList);
+        Collections.sort(l);
+
+        for (int i = 0; i < l.size()-1; i+=2) {
+            if (l.get(i) != l.get(i+1)) {
+                return l.get(i);
+            }
+        }
+        return l.get(l.size()-1);
+    }
+}
