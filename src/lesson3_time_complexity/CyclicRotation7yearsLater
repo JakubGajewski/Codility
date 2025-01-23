@@ -1,0 +1,34 @@
+package playground.cyclicRotation;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+
+public class Solution {
+    public int[] solution(int[] intArray, int K) {
+        if (intArray.length == 0) {
+            return new int[0];
+        }
+
+        Integer[] integerArray = new Integer[intArray.length];
+
+        for (int i = 0; i < intArray.length; i++) {
+            integerArray[i] = intArray[i];
+        }
+
+        LinkedList<Integer> ll = new LinkedList<>(Arrays.asList(integerArray));
+
+        K = K%intArray.length;
+
+        for (int i = 0; i < K; i++) {
+            ll.addFirst(ll.pollLast());
+        }
+
+        int[] result = new int[intArray.length];
+
+        for (int i = 0; i < ll.size(); i++) {
+            result[i] = ll.get(i);
+        }
+
+        return result;
+    }
+}
