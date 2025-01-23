@@ -1,0 +1,23 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] A) {
+        int minimum = Integer.MAX_VALUE;
+        int left = 0;
+        int right =  Arrays.stream(A).sum();
+        int currentAbsDifference = right;
+
+        for (int p = 1; p < A.length; p++) {
+            left += A[p-1];
+            right -= A[p-1];
+
+            currentAbsDifference = Math.abs(left - right);
+
+            if (currentAbsDifference < minimum) {
+                minimum = currentAbsDifference;
+            }
+        }
+
+        return minimum;
+    }
+}
