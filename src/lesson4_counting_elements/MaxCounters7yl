@@ -1,0 +1,32 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int N, int[] A) {
+        int specialValue = N+1;
+        int[] counters = new int[N];
+
+        for (int index = 0; index < A.length; index++) {
+            int valueAtIndex = A[index];
+            if (valueAtIndex == specialValue) {
+                bumpAllToMax(counters);
+                continue;
+            } else {
+                bumpCounter(counters, valueAtIndex - 1);
+            }
+        }
+
+        return counters;
+    }
+
+    private void bumpAllToMax(int[] counters) {
+        int maxValue = Arrays.stream(counters).max().getAsInt();
+
+        for (int i = 0; i < counters.length; i++) {
+            counters[i] = maxValue;
+        }
+    }
+
+    private void bumpCounter(int[] counters, int countersIndex) {
+        counters[countersIndex]++;
+    }
+}
