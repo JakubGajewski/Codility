@@ -1,20 +1,35 @@
 import java.util.*;
 
+// you can also use imports, for example:
+import java.util.*;
+
+// you can write to stdout for debugging purposes, e.g.
+// System.out.println("this is a debug message");
+
 class Solution {
-    public int[] solution(int N, int[] A) {
+      public int[] solution(int N, int[] A) {
         int specialValue = N+1;
         int[] counters = new int[N];
         int maxValue = 0;
+        int allBumpedTo = 0;
 
         for (int index = 0; index < A.length; index++) {
             int valueAtIndex = A[index];
             if (valueAtIndex == specialValue) {
-                bumpAllToMax(counters, maxValue);
-                continue;
+                allBumpedTo = maxValue;
             } else {
                 int counterIndex = valueAtIndex - 1;
+                if (counters[counterIndex] < allBumpedTo) {
+                    counters[counterIndex] = allBumpedTo;
+                }
                 bumpCounter(counters, counterIndex);
                 maxValue = maxValue > counters[counterIndex] ? maxValue : counters[counterIndex];
+            }
+        }
+
+        for (int i = 0; i < counters.length; i++) {
+            if(counters[i] < allBumpedTo) {
+                counters[i] = allBumpedTo;
             }
         }
         return counters;
@@ -36,3 +51,4 @@ class Solution {
         }
     }
 }
+
