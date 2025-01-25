@@ -46,3 +46,131 @@ class Solution {
         return -1;
     }
 }
+
+
+// Needs work, faster solution
+// you can also use imports, for example:
+import java.util.*;
+
+// you can write to stdout for debugging purposes, e.g.
+// System.out.println("this is a debug message");
+
+class Solution {
+    public int[] solution(String S, int[] P, int[] Q) {
+        //int[] inputValues = getAsIntArray(S);
+        int[] result = new int[P.length];
+        char[] stringAsChars = S.toCharArray();
+        System.out.println ("String as chars : " + Arrays.toString(stringAsChars));
+
+        int[] prefixSumLeft = new int[S.length()];
+        int[] prefixSumRight = new int[S.length()];
+
+        int currentMin = 4;
+        for (int i = 0; i < stringAsChars.length; i++) {
+            int current = getValueOfLetter(stringAsChars[i]);
+            if (current < currentMin) {
+                currentMin = current;
+            }
+            prefixSumLeft[i] = currentMin;
+        }
+
+        currentMin = 4;
+        for (int i = stringAsChars.length - 1; i >=0; i--) {
+            int current = getValueOfLetter(stringAsChars[i]);
+            if (current < currentMin) {
+                currentMin = current;
+            }
+            prefixSumRight[i] = currentMin;
+        }
+
+        System.out.println ("Left: " + Arrays.toString(prefixSumLeft));
+        System.out.println ("Right: " + Arrays.toString(prefixSumRight));
+
+        for (int i = 0; i < P.length; i++) {
+            int partialResult;
+
+            int firstMin = prefixSumLeft[Q[i]];
+            int firstMax = prefixSumLeft[P[i]];
+            int secondMin = prefixSumRight[P[i]];
+            int secondMax = prefixSumRight[Q[i]];
+
+            boolean firstChanged = firstMin != firstMax;
+            boolean secondChanged = secondMin != secondMax;
+            
+            if (firstChanged || secondChanged) {
+                if (!secondChanged) {
+                    partialResult = firstMin;
+                } 
+
+                if (!firstChanged) {
+                    partialResult = secondMin;
+                }
+                partialResult = firstMin < secondMin ? firstMin : secondMin;
+
+            } else {
+                if (firstMin == 4 || secondMin == 4) {
+                    System.out.println("both are 4");
+                    partialResult = 4;
+                } else {
+                    int min = 4;
+                    for (int j = P[i]; j <= Q[i]; j++) {
+                        int current = getValueOfLetter(stringAsChars[j]);
+                        if (min < current) {
+                            current = min;
+                        }
+                    }
+                    System.out.println("Min is " + min);
+                    partialResult = min;
+                }
+            }
+            result[i] = partialResult;
+        }
+
+        return result;
+    }
+    private int[] getAsIntArray(String s) {
+        int[] result = new int[s.length()];
+        char[] stringAsChars = s.toCharArray();
+
+        for (int i = 0; i < s.length(); i++) {
+            result[i] = getValueOfLetter(stringAsChars[i]);
+        }
+        return result;
+    }
+
+    private int getValueOfLetter(char letter) {
+        switch (letter) {
+            case 'A':
+                return 1;
+            case 'C':
+                return 2;
+            case 'G':
+                return 3;
+            case 'T':
+                return 4;
+        }
+        return -1;
+    }
+}
+
+// //
+//         HashSet<Integer> indexesContaintingA = new HashSet<Integer>();
+//         HashSet<Integer> indexesContaintingC = new HashSet<Integer>();
+//         HashSet<Integer> indexesContaintingG = new HashSet<Integer>();
+//         HashSet<Integer> indexesContaintingT = new HashSet<Integer>();
+
+//         for (int i = 0; i < S.length(); i++) {
+//             switch (stringAsChars[i]) {
+//             case 'A':
+//                 indexesContaintingA.add(i);
+//                 break;
+//             case 'C':
+//                 indexesContaintingC.add(i);
+//                 break;
+//             case 'G':
+//                 indexesContaintingG.add(i);
+//                 break;
+//             case 'T':
+//                 indexesContaintingT.add(i);
+//                 break;
+//         }
