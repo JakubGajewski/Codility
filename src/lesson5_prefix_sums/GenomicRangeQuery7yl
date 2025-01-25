@@ -1,5 +1,12 @@
 import java.util.*;
 
+//Task Score
+//75%
+//Correctness
+//100%
+//Performance
+//33%
+
 class Solution {
     public int[] solution(String S, int[] P, int[] Q) {
         int[] result = new int[P.length];
