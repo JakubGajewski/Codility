@@ -1,12 +1,13 @@
 import java.util.*;
-//50%
+
 class Solution {
     public int[] solution(String S, int[] P, int[] Q) {
-        //int[] inputValues = getAsIntArray(S);
         int[] result = new int[P.length];
         char[] stringAsChars = S.toCharArray();
         int[] prefixSumLeft = new int[S.length()];
         int[] prefixSumRight = new int[S.length()];
+
+
         int currentMin = 4;
         for (int i = 0; i < stringAsChars.length; i++) {
             int current = getValueOfLetter(stringAsChars[i]);
@@ -25,26 +26,26 @@ class Solution {
         }
 
         for (int i = 0; i < P.length; i++) {
-            int partialResult;
+            int partialResult = -1000;
             int firstMin = prefixSumLeft[Q[i]];
             int firstMax = prefixSumLeft[P[i]];
             int secondMin = prefixSumRight[P[i]];
             int secondMax = prefixSumRight[Q[i]];
             boolean firstChanged = firstMin != firstMax;
             boolean secondChanged = secondMin != secondMax;
-            
+
             if (firstChanged || secondChanged) {
+                if (firstChanged && secondChanged) {
+                    partialResult = firstMin < secondMin ? firstMin : secondMin;
+                }
                 if (!secondChanged) {
                     partialResult = firstMin;
                 } 
                 if (!firstChanged) {
                     partialResult = secondMin;
                 }
-                partialResult = firstMin < secondMin ? firstMin : secondMin;
             } else {
-                if (firstMin == 4 || secondMin == 4) {
-                    partialResult = 4;
-                } else {
+
                     int min = 4;
                     for (int j = P[i]; j <= Q[i]; j++) {
                         int current = getValueOfLetter(stringAsChars[j]);
@@ -55,7 +56,7 @@ class Solution {
                     }
 
                     partialResult = min;
-                }
+                
             }
             result[i] = partialResult;
         }
