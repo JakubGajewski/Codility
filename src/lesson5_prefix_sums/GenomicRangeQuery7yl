@@ -1,93 +1,58 @@
 import java.util.*;
-
-//Task Score
-//75%
-//Correctness
-//100%
-//Performance
-//33%
+//Inspired by another solution....
 
 class Solution {
     public int[] solution(String S, int[] P, int[] Q) {
+        int[] genomeA = new int[S.length()];
+        int[] genomeC = new int[S.length()];
+        int[] genomeG = new int[S.length()];
+        int[] genomeT = new int[S.length()];
+
+        int aCount = 0;
+        int cCount = 0;
+        int gCount = 0;
+        int tCount = 0;
+
+        char[] input = S.toCharArray();
+        
+        for (int i = 0; i < S.length(); i++) {
+            switch (input[i]) {
+                case 'A':
+                    aCount++;
+                    break;
+                case 'C':
+                    cCount++;
+                    break;
+                case 'G':
+                    gCount++;
+                    break;
+                case 'T':
+                    tCount++;
+                    break;
+            }
+            genomeA[i] = aCount;
+            genomeC[i] = cCount;
+            genomeG[i] = gCount;
+            genomeT[i] = tCount;
+        }
+
         int[] result = new int[P.length];
-        char[] stringAsChars = S.toCharArray();
-        int[] prefixSumLeft = new int[S.length()];
-        int[] prefixSumRight = new int[S.length()];
-
-
-        int currentMin = 4;
-        for (int i = 0; i < stringAsChars.length; i++) {
-            int current = getValueOfLetter(stringAsChars[i]);
-            if (current < currentMin) {
-                currentMin = current;
-            }
-            prefixSumLeft[i] = currentMin;
-        }
-        currentMin = 4;
-        for (int i = stringAsChars.length - 1; i >=0; i--) {
-            int current = getValueOfLetter(stringAsChars[i]);
-            if (current < currentMin) {
-                currentMin = current;
-            }
-            prefixSumRight[i] = currentMin;
-        }
 
         for (int i = 0; i < P.length; i++) {
-            int partialResult = -1000;
-            int firstMin = prefixSumLeft[Q[i]];
-            int firstMax = prefixSumLeft[P[i]];
-            int secondMin = prefixSumRight[P[i]];
-            int secondMax = prefixSumRight[Q[i]];
-            boolean firstChanged = firstMin != firstMax;
-            boolean secondChanged = secondMin != secondMax;
+            int i1 = P[i];
+            int i2 = Q[i];
 
-            if (firstChanged || secondChanged) {
-                if (firstChanged && secondChanged) {
-                    partialResult = firstMin < secondMin ? firstMin : secondMin;
-                }
-                if (!secondChanged) {
-                    partialResult = firstMin;
-                } 
-                if (!firstChanged) {
-                    partialResult = secondMin;
-                }
+            if (genomeA[i1] != genomeA[i2]) {
+                result[i] = 1;
+            } else if (genomeC[i1] != genomeC[i2]) {
+                result[i] = 2;
+            } else if (genomeG[i1] != genomeG[i2]) {
+                result[i] = 3;
             } else {
-
-                    int min = 4;
-                    for (int j = P[i]; j <= Q[i]; j++) {
-                        int current = getValueOfLetter(stringAsChars[j]);
-
-                        if (min > current) {
-                            min = current;
-                        }
-                    }
-
-                    partialResult = min;
-                
+                result[i] = 4;
             }
-            result[i] = partialResult;
         }
+        
         return result;
-    }
-    private int[] getAsIntArray(String s) {
-        int[] result = new int[s.length()];
-        char[] stringAsChars = s.toCharArray();
-        for (int i = 0; i < s.length(); i++) {
-            result[i] = getValueOfLetter(stringAsChars[i]);
-        }
-        return result;
-    }
-    private int getValueOfLetter(char letter) {
-        switch (letter) {
-            case 'A':
-                return 1;
-            case 'C':
-                return 2;
-            case 'G':
-                return 3;
-            case 'T':
-                return 4;
-        }
-        return -1;
     }
 }
