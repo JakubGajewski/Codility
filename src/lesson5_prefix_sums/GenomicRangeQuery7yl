@@ -5,12 +5,10 @@ class Solution {
         int[] genomeA = new int[S.length()];
         int[] genomeC = new int[S.length()];
         int[] genomeG = new int[S.length()];
-        int[] genomeT = new int[S.length()];
 
         int aCount = 0;
         int cCount = 0;
         int gCount = 0;
-        int tCount = 0;
 
         char[] input = S.toCharArray();
         
@@ -25,14 +23,10 @@ class Solution {
                 case 'G':
                     gCount++;
                     break;
-                case 'T':
-                    tCount++;
-                    break;
             }
             genomeA[i] = aCount;
             genomeC[i] = cCount;
             genomeG[i] = gCount;
-            genomeT[i] = tCount;
         }
 
         int[] result = new int[P.length];
@@ -41,37 +35,44 @@ class Solution {
             int i1 = P[i];
             int i2 = Q[i];
 
-            //if (P[i] == Q[i]) {
-            //    result[i] = 1;
-            //}
+            int min = charToInt(input[i1]);
 
-            if (i1 == i2) {
-                final char c = input[i1];
-                switch (c) {
-                    case 'A':
-                        result[i] = 1;
-                        break;
-                   case 'C':
-                        result[i] = 2;
-                        break;
-                   case 'G':
-                        result[i] = 3;
-                        break;
-                   case 'T':
-                        result[i] = 4;
-                        break;
-                } 
-            } else if (genomeA[i1] != genomeA[i2]) {
-                result[i] = 1;
+            if (genomeA[i1] != genomeA[i2]) {
+                if (min > 1) {
+                    min = 1;
+                }
             } else if (genomeC[i1] != genomeC[i2]) {
-                result[i] = 2;
+                           if (min > 2) {
+                    min = 2;
+                }
             } else if (genomeG[i1] != genomeG[i2]) {
-                result[i] = 3;
-            } else {
-                result[i] = 4;
+                           if (min > 3) {
+                    min = 3;
+                }
             }
+
+            result[i] = min;
         }
         
+        return result;
+    }
+
+    private int charToInt(char c) {
+        int result = 0;
+        switch (c) {
+                    case 'A':
+                        result = 1;
+                        break;
+                   case 'C':
+                        result = 2;
+                        break;
+                   case 'G':
+                        result = 3;
+                        break;
+                   case 'T':
+                        result = 4;
+                        break;
+                } 
         return result;
     }
 
