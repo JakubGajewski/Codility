@@ -1,5 +1,4 @@
 import java.util.*;
-//Inspired by another solution....
 
 class Solution {
     public int[] solution(String S, int[] P, int[] Q) {
@@ -42,7 +41,27 @@ class Solution {
             int i1 = P[i];
             int i2 = Q[i];
 
-            if (genomeA[i1] != genomeA[i2]) {
+            //if (P[i] == Q[i]) {
+            //    result[i] = 1;
+            //}
+
+            if (i1 == i2) {
+                final char c = input[i1];
+                switch (c) {
+                    case 'A':
+                        result[i] = 1;
+                        break;
+                   case 'C':
+                        result[i] = 2;
+                        break;
+                   case 'G':
+                        result[i] = 3;
+                        break;
+                   case 'T':
+                        result[i] = 4;
+                        break;
+                } 
+            } else if (genomeA[i1] != genomeA[i2]) {
                 result[i] = 1;
             } else if (genomeC[i1] != genomeC[i2]) {
                 result[i] = 2;
@@ -55,4 +74,5 @@ class Solution {
         
         return result;
     }
+
 }
