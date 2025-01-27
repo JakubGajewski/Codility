@@ -1,0 +1,51 @@
+//80% correctness
+//40% performance
+
+class Solution {
+    public int solution(int[] A) {
+        
+        if (A.length == 2) {
+            return 0;
+        }
+
+        int sliceOfTwoStartingIndex = 0;
+        double sliceOfTwoMinAvg = getAvg(A[0], A[1]);
+
+        int sliceOfThreeStartingIndex = 0;
+        double sliceOfThreeMinAvg = getAvg(A[0], A[1], A[2]);
+
+        double minAvg = sliceOfTwoMinAvg < sliceOfThreeMinAvg ? sliceOfTwoMinAvg : sliceOfThreeMinAvg;
+        int minAvgIndex = 0;
+
+        for (int i = 0; i <= A.length - 3; i++) {
+            double sliceOf3Avg = getAvg(A[i], A[i+1], A[i+2]);
+            if (sliceOf3Avg < minAvg) {
+                minAvg = sliceOf3Avg;
+                minAvgIndex = i;
+            }
+
+            double sliceOf2Avg = getAvg(A[i], A[i+1]);
+            if (sliceOf2Avg < minAvg) {
+                minAvg = sliceOf2Avg;
+                minAvgIndex = i;
+            }
+        }
+
+        double sliceOf2Avg = getAvg(A[A.length-2], A[A.length-1]);
+
+        if (sliceOf2Avg < minAvg) {
+            minAvg = sliceOf2Avg;
+            minAvgIndex = A.length -2;
+        }
+        return minAvgIndex;
+    }
+    
+    
+    private double getAvg(double... dbs) {
+        double sum = 0;
+        for (int i = 0; i < dbs.length; i++) {
+            sum += dbs[i];
+        }
+        return sum / 3.0;
+    }
+}
