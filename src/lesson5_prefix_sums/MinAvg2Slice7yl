@@ -1,39 +1,38 @@
-//80% correctness
-//40% performance
-
+import java.math.*;
+import java.util.*;
+//Let's try on BigDecimals...
 class Solution {
-    public int solution(int[] A) {
-        
+    public int solution(int[] A) {        
         if (A.length == 2) {
             return 0;
         }
 
         int sliceOfTwoStartingIndex = 0;
-        double sliceOfTwoMinAvg = getAvg(A[0], A[1]);
+        BigDecimal sliceOfTwoMinAvg = getAvg(new BigDecimal(A[0]), new BigDecimal(A[1]));
 
         int sliceOfThreeStartingIndex = 0;
-        double sliceOfThreeMinAvg = getAvg(A[0], A[1], A[2]);
+        BigDecimal sliceOfThreeMinAvg = getAvg(new BigDecimal(A[0]), new BigDecimal(A[1]), new BigDecimal(A[2]));
 
-        double minAvg = sliceOfTwoMinAvg < sliceOfThreeMinAvg ? sliceOfTwoMinAvg : sliceOfThreeMinAvg;
+        BigDecimal minAvg = sliceOfTwoMinAvg.compareTo(sliceOfThreeMinAvg) < 0 ? sliceOfTwoMinAvg : sliceOfThreeMinAvg;
         int minAvgIndex = 0;
 
         for (int i = 0; i <= A.length - 3; i++) {
-            double sliceOf3Avg = getAvg(A[i], A[i+1], A[i+2]);
-            if (sliceOf3Avg < minAvg) {
+            BigDecimal sliceOf3Avg = getAvg(new BigDecimal(A[i]), new BigDecimal(i+1), new BigDecimal(A[i+2]));
+            if (sliceOf3Avg.compareTo(minAvg) < 0) {
                 minAvg = sliceOf3Avg;
                 minAvgIndex = i;
             }
 
-            double sliceOf2Avg = getAvg(A[i], A[i+1]);
-            if (sliceOf2Avg < minAvg) {
+            BigDecimal sliceOf2Avg = getAvg(new BigDecimal(A[i]), new BigDecimal(i+1));
+            if (sliceOf2Avg.compareTo(minAvg) < 0) {
                 minAvg = sliceOf2Avg;
                 minAvgIndex = i;
             }
         }
 
-        double sliceOf2Avg = getAvg(A[A.length-2], A[A.length-1]);
+        BigDecimal sliceOf2Avg = getAvg(new BigDecimal(A[A.length-2]), new BigDecimal(A[A.length-1]));
 
-        if (sliceOf2Avg < minAvg) {
+        if (sliceOf2Avg.compareTo(minAvg) < 0) {
             minAvg = sliceOf2Avg;
             minAvgIndex = A.length -2;
         }
@@ -41,11 +40,11 @@ class Solution {
     }
     
     
-    private double getAvg(double... dbs) {
-        double sum = 0;
+    private BigDecimal getAvg(BigDecimal... dbs) {
+        BigDecimal sum = BigDecimal.ZERO;
         for (int i = 0; i < dbs.length; i++) {
-            sum += dbs[i];
+            sum = sum.add(dbs[i]);
         }
-        return sum / 3.0;
+        return sum.divide(new BigDecimal(3), RoundingMode.HALF_UP);
     }
 }
