@@ -1,7 +1,5 @@
 import java.util.*;
-//93%, problem with 
-//extreme_arith_overflow1 overflow test, 3 MAXINTs✘WRONG ANSWER got 0 expected 1
-
+//44%
 class Solution {
     public int solution(int[] A) {
         Arrays.sort(A);
