@@ -12,5 +12,6 @@ class Solution {
         }
         
         return found ? 1 : 0;
+        //But I forgot that you can not sum two of int max values....
     }
 }
