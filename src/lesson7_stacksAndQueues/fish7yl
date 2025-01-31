@@ -1,0 +1,32 @@
+import java.util.*;
+//100%
+class Solution {
+    public int solution(int[] A, int[] B) {
+        Stack<Integer> zeros = new Stack<Integer>();//up(left) is zero
+        Stack<Integer> ones = new Stack<Integer>();//down(right) is one       
+        int away = 0; 
+
+        for (int i = 0; i < A.length; i++) {
+            int newSize = A[i];
+            int newDirection = B[i];
+
+            if (newDirection == 0 && ones.isEmpty()) {
+                away++;
+            }
+
+            if (newDirection == 0 && !ones.isEmpty()) {
+                int one = ones.pop();
+                if (newSize > one) {
+                    i--;
+                } else {
+                    ones.push(one);
+                }
+            }
+            if (newDirection == 1) {
+                ones.add(newSize);
+            }        
+        }
+        return away + zeros.size() + ones.size();
+    }
+}
+ 
