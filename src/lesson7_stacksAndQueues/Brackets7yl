@@ -1,0 +1,58 @@
+// you can also use imports, for example:
+import java.util.*;
+
+class Solution {
+    public int solution(String S) {
+        char[] chars = S.toCharArray();
+        return chars.length == 0 ? 1 : calculateSolution(chars);
+    }
+
+    private int calculateSolution(char[] chars) {
+        Stack<Character> stack = new Stack<Character>();
+        int result = tryGetIncorrectResult(stack, chars);
+        return result == 1 && stack.size() == 0 ? 1 : 0;
+    }
+
+    private int tryGetIncorrectResult(Stack<Character> stack, char[] chars) {
+        int result = 1;
+
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            
+            if (stack.size() == 0 && isOneOfClosingChars(c)) {
+                return 0;
+            };
+            if (isOneOfClosingChars(c)) {
+                char last = stack.pop();
+                if (isNotProperlyClosing(last, c)) {
+                    return 0;
+                }
+                continue;
+            }
+
+            if (isOneOfOpeningChars(c)) {
+                stack.push(chars[i]);
+                continue;
+            };
+
+        }
+
+        return result;
+    }
+
+    private boolean isOneOfOpeningChars(char c) {
+        return c == '{' || c == '[' || c == '(';
+    }
+    private boolean isOneOfClosingChars(char c) {
+        return c == '}' || c == ']' || c == ')';
+    }
+
+    private boolean isNotProperlyClosing(char opening, char closing) {
+        return !((opening == '(' && closing == ')') 
+        || (opening == '[' && closing == ']') 
+        || (opening == '{' && closing == '}')); 
+
+    }
+    
+}
+
