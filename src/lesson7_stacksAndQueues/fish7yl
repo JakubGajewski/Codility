@@ -1,32 +1,34 @@
 import java.util.*;
-//100%
+
 class Solution {
     public int solution(int[] A, int[] B) {
-        Stack<Integer> zeros = new Stack<Integer>();//up(left) is zero
-        Stack<Integer> ones = new Stack<Integer>();//down(right) is one       
-        int away = 0; 
+        final int UP = 0;
+        final int DOWN = 1;
+
+        Stack<Integer> downs = new Stack<Integer>();
+        int result = 0;
 
         for (int i = 0; i < A.length; i++) {
-            int newSize = A[i];
-            int newDirection = B[i];
+            int direction = B[i];
 
-            if (newDirection == 0 && ones.isEmpty()) {
-                away++;
-            }
-
-            if (newDirection == 0 && !ones.isEmpty()) {
-                int one = ones.pop();
-                if (newSize > one) {
-                    i--;
+            if (direction == UP) {
+                if (downs.isEmpty()) {
+                    result++;
                 } else {
-                    ones.push(one);
+                    int up = A[i];
+                    int down = downs.pop();
+
+                    if (up > down) {
+                        i--;
+                    } else {
+                        downs.push(down);
+                    }
                 }
             }
-            if (newDirection == 1) {
-                ones.add(newSize);
-            }        
+            if (direction == DOWN) {
+                downs.push(A[i]);
+            }
         }
-        return away + zeros.size() + ones.size();
+        return result + downs.size();
     }
 }
- 
